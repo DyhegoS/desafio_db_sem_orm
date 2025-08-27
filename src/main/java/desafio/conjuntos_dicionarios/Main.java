@@ -55,6 +55,7 @@ public class Main {
             for(Long d : dict.keySet()){
                 if(departmentName == dict.get(d)){
                     dp.addEmployee(new Employee(id, name, salary, new Department(departmentId, departmentName)));
+                    System.out.println(dp);
                 }
             }
               

@@ -42,7 +42,10 @@ public class Department {
 
     @Override
     public String toString() {
-        return name + ": " + getEmp();
+        StringBuilder sb = new StringBuilder();
+        sb.append(name + ":\n");
+        sb.append(getEmp() + "\n");
+        return sb.toString();
     }
     
 }
