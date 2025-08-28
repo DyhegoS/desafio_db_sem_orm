@@ -18,14 +18,13 @@ public class Main {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            File entrys = new File("C:\\temp\\jsons");
+            File entrys = new File("C:\\temp\\csv");
 
-            File[] jsonData = entrys.listFiles(File::isFile);
+            File[] csvData = entrys.listFiles(File::isFile);
 
-            for(File json : jsonData){
-                String[] record = objectMapper.readValue(json, new TypeReference<String[]>() {});
+            for(File csv : csvData){
+                String[] record = objectMapper.readValue(csv, new TypeReference<String[]>() {});
                 convertRecords(record);
-                System.out.println("====================================================================");
             }
 
         } catch (IOException e) {
@@ -36,9 +35,8 @@ public class Main {
     }
 
     static List<Department> convertRecords(String[] records) {
-        Map<Long, String> dict = new HashMap<>();
-        Department dp = new Department();
-        List<Department> result = new ArrayList<>();
+        Map<Long, Department> dict = new HashMap<>();
+        List<Department> list = new ArrayList<>();
         
         for(String rec : records){
             String[] parts = rec.split(",");
@@ -48,19 +46,17 @@ public class Main {
             Long departmentId = Long.parseLong(parts[0]);
             String departmentName = parts[1];
 
-            if(!dict.containsKey(departmentId)){
-                dict.put(departmentId, departmentName);
+            if(dict.containsKey(departmentId)){
+                dict.get(departmentId).addEmployee(new Employee(id, name, salary, new Department(departmentId, departmentName)));
             }
+            else{
+                dict.put(departmentId, new Department(departmentId, departmentName));
 
-            for(Long d : dict.keySet()){
-                if(departmentName == dict.get(d)){
-                    dp.addEmployee(new Employee(id, name, salary, new Department(departmentId, departmentName)));
-                    System.out.println(dp);
-                }
             }
-              
-        }     
-    
-        return null;
+                 
+            
+        }
+        
+        return list;
     }
 }
