@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,15 +17,17 @@ import desafio.conjuntos_dicionarios.entities.Employee;
 public class Main {
     public static void main(String[] args) {
         ObjectMapper objectMapper = new ObjectMapper();
+        
 
         try {
             File entrys = new File("C:\\temp\\csv");
 
             File[] csvData = entrys.listFiles(File::isFile);
 
-            for(File csv : csvData){
-                String[] record = objectMapper.readValue(csv, new TypeReference<String[]>() {});
-                convertRecords(record);
+            for (File csv : csvData) {
+                String[] record = objectMapper.readValue(csv, new TypeReference<String[]>() {
+                });
+                convertRecords(record); 
             }
 
         } catch (IOException e) {
@@ -37,8 +40,8 @@ public class Main {
     static List<Department> convertRecords(String[] records) {
         Map<Long, Department> dict = new HashMap<>();
         List<Department> list = new ArrayList<>();
-        
-        for(String rec : records){
+
+        for (String rec : records) {
             String[] parts = rec.split(",");
             String name = parts[3];
             Long id = Long.parseLong(parts[2]);
@@ -46,17 +49,22 @@ public class Main {
             Long departmentId = Long.parseLong(parts[0]);
             String departmentName = parts[1];
 
-            if(dict.containsKey(departmentId)){
-                dict.get(departmentId).addEmployee(new Employee(id, name, salary, new Department(departmentId, departmentName)));
-            }
-            else{
+            if (dict.containsKey(departmentId)) {
+                dict.get(departmentId)
+                        .addEmployee(new Employee(id, name, salary, new Department(departmentId, departmentName)));
+            } else {
                 dict.put(departmentId, new Department(departmentId, departmentName));
+                dict.get(departmentId)
+                        .addEmployee(new Employee(id, name, salary, new Department(departmentId, departmentName)));
 
             }
-                 
-            
+
         }
-        
+
+        for (Department d : dict.values()) {
+            list.add(d);
+        }
+
         return list;
     }
 }
