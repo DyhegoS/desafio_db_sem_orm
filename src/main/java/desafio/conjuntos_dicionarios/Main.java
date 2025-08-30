@@ -6,11 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import desafio.conjuntos_dicionarios.entities.Department;
 import desafio.conjuntos_dicionarios.entities.Employee;
 
@@ -56,15 +53,15 @@ public class Main {
                 dict.put(departmentId, new Department(departmentId, departmentName));
                 dict.get(departmentId)
                         .addEmployee(new Employee(id, name, salary, new Department(departmentId, departmentName)));
-
             }
-
         }
-
         for (Department d : dict.values()) {
             list.add(d);
         }
 
+        for(Department item : list){
+            System.out.println(item);
+        }
         return list;
     }
 }

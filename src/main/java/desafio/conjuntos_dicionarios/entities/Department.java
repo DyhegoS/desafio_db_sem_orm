@@ -44,7 +44,9 @@ public class Department {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(name + ":\n");
-        sb.append(getEmp() + "\n");
+        for(Employee e : emp){
+            sb.append("   " + e);
+        }
         return sb.toString();
     }
     
